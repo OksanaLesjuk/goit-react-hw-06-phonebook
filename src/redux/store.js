@@ -13,6 +13,7 @@ export const reducer = combineReducers({
 const persistConfig = {
     key: 'root',
     storage,
+    whitelist: ['contacts']
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer)
