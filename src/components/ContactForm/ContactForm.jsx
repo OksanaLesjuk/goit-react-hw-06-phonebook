@@ -1,12 +1,15 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { Form, Input, ContactsFormButton } from './ContactForm.styled';
-
+import { addContact } from 'redux/contactsSlice';
 import React from 'react';
+import { getContacts } from 'redux/selectors';
 
-export const ContactForm = ({ createContacts }) => {
+export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
+  const dispatch = useDispatch();
+  const { contacts } = useSelector(getContacts);
   const handleInput = e => {
     if (e.target.name === 'name') setName(e.target.value.trim());
     if (e.target.name === 'number') setNumber(e.target.value.trim());
@@ -14,7 +17,16 @@ export const ContactForm = ({ createContacts }) => {
 
   const handleSubmitForm = e => {
     e.preventDefault();
-    createContacts({ name: name, number: number });
+
+    const dataForm = { name: name, number: number };
+    const existingContact = contacts.find(
+      contact => contact.name === dataForm.name
+    );
+    if (existingContact) {
+      return alert(`${dataForm.name} is already in contacts`);
+    }
+    dispatch(addContact(dataForm));
+
     setName('');
     setNumber('');
   };

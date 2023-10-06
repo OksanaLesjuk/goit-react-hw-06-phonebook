@@ -1,7 +1,17 @@
 import { Input } from 'components/ContactForm/ContactForm.styled';
 import { FilterMessage } from './Filter.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFilter } from 'redux/selectors';
+import { filterContacts } from 'redux/filterSlice';
 
-const Filter = ({ handleFilter, filter }) => {
+const Filter = () => {
+  const { filter } = useSelector(getFilter);
+
+  const dispatch = useDispatch();
+  const handleFilter = ({ target: { value } }) => {
+    dispatch(filterContacts(value));
+  };
+
   return (
     <div>
       <FilterMessage>Find contacts by name</FilterMessage>
